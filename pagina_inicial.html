@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Pedido</title>
+
+    <style>
+        body{
+            background-color: #0c0c0c;
+        }
+        .card {
+            background-image: linear-gradient(to left bottom, #000000, #14084b);
+            color: white;
+            text-align: center;
+            border: solid 3px yellowgreen;
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: large
+        }
+        input{
+            font-size: large;
+        }
+
+        .pix-box {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .copy-btn {
+            padding: 5px 10px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card shadow">
+    <h3 class="text-center mb-3">Salgado Valor R$ 3,50</h3>
+
+    <!-- FORM COM NAMES PARA IR PRO BANCO -->
+    <form id="formPedido" action="enviar_para_o_banco.php" method="POST">
+
+        <label class="form-label">Nome:</label>
+        <input type="text" id="nome" name="nome" class="form-control" required>
+
+        <label class="form-label mt-3">Quantidade:</label>
+        <input type="number" id="quantidade" name="quantidade" class="form-control" required>
+
+        <label class="form-label mt-3">Valor:</label>
+        <input type="number" id="valor" name="valor" class="form-control" readonly required>
+
+        <label class="form-label mt-3">Forma de Pagamento:</label>
+        <select id="pagamento" name="pagamento" class="form-select" required>
+            <option value="">Selecione</option>
+            <option value="pix">PIX</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="promissoria">Promissória</option>
+        </select>
+
+        <!-- ÁREA PIX -->
+        <div id="pixArea" class="pix-box">
+            <p><strong class="text-dark">Chave PIX (CPF):</strong> 
+                <span id="cpfPix" class="text-dark">05307353340</span>
+                <button type="button" class="copy-btn" onclick="copiarPix()">Copiar</button>
+            </p>
+
+            <p class="text-danger"><strong>⚠ Envie o comprovante pelo WhatsApp após concluir o PIX.</strong></p>
+
+            <!-- Guarda no banco também -->
+            <input type="hidden" name="comprovante_msg" value="Aguardando comprovante PIX enviado pelo WhatsApp">
+        </div>
+
+        <button class="btn btn-success w-100 mt-3" type="button" onclick="enviarWhats()">Enviar</button>
+    </form>
+</div>
+
+<script>
+    // Calculo automático
+    document.getElementById("quantidade").addEventListener("input", function () {
+        let q = parseFloat(this.value);
+        document.getElementById("valor").value = q > 0 ? (q * 3.5).toFixed(2) : "";
+    });
+
+    // Mostrar área PIX
+    document.getElementById("pagamento").addEventListener("change", function () {
+        let pixArea = document.getElementById("pixArea");
+
+        if (this.value === "pix") {
+            pixArea.style.display = "block";
+        } else {
+            pixArea.style.display = "none";
+        }
+    });
+
+    // Copiar CPF PIX
+    function copiarPix() {
+        navigator.clipboard.writeText("05307353340");
+        alert("Chave PIX copiada!");
+    }
+
+    // Enviar WhatsApp + Enviar formulário para o banco
+    function enviarWhats() {
+
+        // Verifica campos obrigatórios
+        if (!document.getElementById("formPedido").checkValidity()) {
+            document.getElementById("formPedido").reportValidity();
+            return;
+        }
+
+        let nome = document.getElementById("nome").value;
+        let quantidade = document.getElementById("quantidade").value;
+        let valor = document.getElementById("valor").value;
+        let pagamento = document.getElementById("pagamento").value;
+
+        let msg =
+`*Nova Compra de ${quantidade} Salgado(s)*  
+Nome: ${nome}
+Quantidade: ${quantidade}
+Valor Total: R$ ${valor}
+Pagamento: ${pagamento.toUpperCase()}
+
+${pagamento === "pix" ? "⚠ Envie o comprovante do PIX após o pagamento." : ""}`;
+
+        // WhatsApp
+        let url = "https://wa.me/5588988188728?text=" + encodeURIComponent(msg);
+        window.open(url, "_blank");
+
+        // Agora envia para o banco
+        setTimeout(() => {
+            document.getElementById("formPedido").submit();
+        }, 500);
+    }
+</script>
+
+</body>
+</html>

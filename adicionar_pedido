@@ -1,0 +1,35 @@
+<?php
+include "conexao.php";
+
+date_default_timezone_set('America/Sao_Paulo');
+
+if (!isset($_POST['nome'], $_POST['quantidade'], $_POST['valor'], $_POST['pagamento'])) {
+    die("Dados incompletos.");
+}
+
+$nome       = $_POST['nome'];
+$quantidade = (int) $_POST['quantidade'];
+$valor      = (float) $_POST['valor'];
+$pagamento  = $_POST['pagamento'];
+$data       = $_POST['data_pedido'];
+
+// Se não mandar data, usa agora
+if (empty($data)) {
+    $data = date("Y-m-d H:i:s");
+} else {
+    // datetime-local vem como 'YYYY-MM-DDTHH:MM'
+    $data = str_replace('T', ' ', $data) . ":00";
+}
+
+$sql = "INSERT INTO pedidos (nome, quantidade, valor, pagamento, data_pedido, pago)
+        VALUES (?, ?, ?, ?, ?, 0)";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sidss", $nome, $quantidade, $valor, $pagamento, $data);
+
+if ($stmt->execute()) {
+    header("Location: listar_pedidos.php");
+    exit;
+} else {
+    echo "Erro ao adicionar pedido.";
+}
