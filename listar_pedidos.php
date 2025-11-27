@@ -72,10 +72,8 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
         h2{
             color:white;
         }
-        body
-        label{
+        body label{
             color:white;
-            
         }
         .container { max-width: 1400px; margin-top: 30px; }
         .total-box {
@@ -90,9 +88,11 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
     <script>
         let acaoAtual = "";
         let idAtual = 0;
+        let idPagamento = 0;
 
+        // Modal da senha
         function abrirModalSenha(acao, id) {
-            acaoAtual = acao; // 'desmarcar' ou 'excluir'
+            acaoAtual = acao;
             idAtual = id;
             document.getElementById("senha").value = "";
             const modal = new bootstrap.Modal(document.getElementById('modalSenha'));
@@ -101,15 +101,32 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
 
         function confirmarAcao() {
             const senha = document.getElementById("senha").value;
-
             if (!senha) {
                 alert("Digite a senha.");
                 return;
             }
-
             window.location.href = "acao_pedido.php?acao=" + encodeURIComponent(acaoAtual) +
                                    "&id=" + encodeURIComponent(idAtual) +
                                    "&senha=" + encodeURIComponent(senha);
+        }
+
+        // Modal do pagamento com data
+        function abrirModalPagamento(id) {
+            idPagamento = id;
+            document.getElementById("data_pagamento").value = "";
+            const modal = new bootstrap.Modal(document.getElementById('modalPagamento'));
+            modal.show();
+        }
+
+        function salvarPagamento() {
+            const data = document.getElementById("data_pagamento").value;
+
+            if (!data) {
+                alert("Selecione a data do pagamento.");
+                return;
+            }
+
+            window.location.href = "registrar_pagamento.php?id=" + idPagamento + "&data=" + data;
         }
     </script>
 </head>
@@ -133,6 +150,7 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
             <strong class="text-danger">R$ <?= number_format($totalPendente, 2, ',', '.') ?></strong>
         </div>
     </div>
+
     <!-- FILTROS -->
     <form method="GET" class="row g-3 mb-4">
 
@@ -176,8 +194,9 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
                 <th>Qtd</th>
                 <th>Valor</th>
                 <th>Pagamento</th>
-                <th>Data</th>
+                <th>Emissão</th>
                 <th>Status</th>
+                <th>Data Pgto</th>
                 <th style="width: 220px;">Ações</th>
             </tr>
         </thead>
@@ -201,14 +220,19 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
                         </td>
 
                         <td>
+                            <?= $row['data_pagamento'] ? date("d/m/Y", strtotime($row['data_pagamento'])) : "-" ?>
+                        </td>
+
+                        <td>
                             <?php if ($row['pago'] == 0): ?>
-                                <!-- Marcar como pago (sem senha) -->
-                                <a href="acao_pedido.php?acao=marcar&id=<?= $row['id'] ?>"
-                                   class="btn btn-success btn-sm mb-1">
-                                   Marcar Pago
-                                </a>
+                                <!-- Registrar pagamento (com data) -->
+                                <button type="button"
+                                        class="btn btn-success btn-sm mb-1"
+                                        onclick="abrirModalPagamento(<?= $row['id'] ?>)">
+                                    Registrar Pagamento
+                                </button>
                             <?php else: ?>
-                                <!-- Desmarcar (com senha) -->
+                                <!-- Desmarcar -->
                                 <button type="button"
                                         class="btn btn-secondary btn-sm mb-1"
                                         onclick="abrirModalSenha('desmarcar', <?= $row['id'] ?>)">
@@ -216,7 +240,7 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
                                 </button>
                             <?php endif; ?>
 
-                            <!-- Excluir (com senha) -->
+                            <!-- Excluir -->
                             <button type="button"
                                     class="btn btn-danger btn-sm"
                                     onclick="abrirModalSenha('excluir', <?= $row['id'] ?>)">
@@ -227,7 +251,7 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
                 <?php endwhile; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="8" class="text-center text-danger">Nenhum pedido encontrado.</td>
+                    <td colspan="9" class="text-center text-danger">Nenhum pedido encontrado.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
@@ -258,45 +282,68 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
     </div>
   </div>
 </div>
+
+<!-- MODAL REGISTRAR PAGAMENTO -->
+<div class="modal fade" id="modalPagamento" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Registrar Pagamento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <label class="form-label">Data do Pagamento:</label>
+        <input type="date" id="data_pagamento" class="form-control">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" onclick="salvarPagamento()">Salvar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <br><br>
 
-    <!-- FORMULÁRIO P/ ADICIONAR MANUAL -->
+<!-- FORMULÁRIO PARA ADICIONAR MANUAL -->
+<form action="enviar_para_o_banco_listar.php" method="POST" class="row g-3 mb-4 p-3 border rounded">
+    <div class="col-md-4">
+        <label class="form-label">Nome:</label>
+        <input type="text" name="nome" class="form-control" required>
+    </div>
 
+    <div class="col-md-2">
+        <label class="form-label">Quantidade:</label>
+        <input type="number" name="quantidade" class="form-control" min="1" required>
+    </div>
 
-    <form action="enviar_para_o_banco_listar.php" method="POST" class="row g-3 mb-4 p-3 border rounded">
-        <div class="col-md-4">
-            <label class="form-label">Nome:</label>
-            <input type="text" name="nome" class="form-control" required>
-        </div>
+    <div class="col-md-2">
+        <label class="form-label">Valor:</label>
+        <input type="number" name="valor" class="form-control" min="0.01" step="0.01" required>
+    </div>
 
-        <div class="col-md-2">
-            <label class="form-label">Quantidade:</label>
-            <input type="number" name="quantidade" class="form-control" min="1" required>
-        </div>
+    <div class="col-md-2">
+        <label class="form-label">Pagamento:</label>
+        <select name="pagamento" class="form-select" required>
+            <option value="pix">PIX</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="promissoria">Promissória</option>
+        </select>
+    </div>
 
-        <div class="col-md-2">
-            <label class="form-label">Valor (R$):</label>
-            <input type="number" name="valor" class="form-control" min="0.01" step="0.01" required>
-        </div>
+    <div class="col-md-2">
+        <label class="form-label">Data do Pedido:</label>
+        <input type="datetime-local" name="data_pedido" class="form-control">
+    </div>
 
-        <div class="col-md-2">
-            <label class="form-label">Pagamento:</label>
-            <select name="pagamento" class="form-select" required>
-                <option value="pix">PIX</option>
-                <option value="dinheiro">Dinheiro</option>
-                <option value="promissoria">Promissória</option>
-            </select>
-        </div>
-
-        <div class="col-md-2">
-            <label class="form-label">Data do Pedido:</label>
-            <input type="datetime-local" name="data_pedido" class="form-control">
-        </div>
-
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary w-100">Adicionar Pedido</button>
-        </div>
-    </form>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100">Adicionar Pedido</button>
+    </div>
+</form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
