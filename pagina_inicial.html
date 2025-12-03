@@ -10,22 +10,93 @@
 
     <style>
         body{
-            background-color: #0c0c0c;
+            background-color: #000;
         }
         .card {
             background-image: linear-gradient(to left bottom, #000000, #14084b);
             color: white;
             text-align: center;
-            border: solid 3px yellowgreen;
-            max-width: 600px;
+            border: solid 1px rgb(255, 255, 255);
+            max-width: 380px;
             margin: 25px auto;
-            padding: 20px;
+            padding: 8px;
             font-family: 'Times New Roman', Times, serif;
             font-size: large
         }
         input{
             font-size: large;
         }
+
+.botao {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    font-size: x-large;
+    position: relative;
+    z-index: 0;
+    border-radius: 15px;
+}
+
+.botao:before{
+    content: '';
+    background: linear-gradient(45deg, #00ff00, #2704ec5d, #00ff00);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(1px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 8s linear infinite;
+    opacity: 1; /* fica sempre ativo */
+    border-radius: 10px;
+}
+
+.card:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #0400ff, #00ff00);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(20px);
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    animation: glowing 8s linear infinite;
+    opacity: 1; /* fica sempre ativo */
+    border-radius: 10px;
+}
+
+.botao:active {
+    color: #000;
+}
+
+.botao:after {
+    z-index: -2;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
 
         .pix-box {
             background: #f1f1f1;
@@ -36,11 +107,12 @@
         }
 
         .copy-btn {
-            padding: 5px 10px;
-            background: #0d6efd;
+            margin-top: 5px;
+            background-color: #000;
+            padding: 2px 8px;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             margin-left: 5px;
         }
@@ -73,8 +145,8 @@
 
         <!-- ÁREA PIX -->
         <div id="pixArea" class="pix-box">
-            <p><strong class="text-dark">Chave PIX (CPF):</strong> 
-                <span id="cpfPix" class="text-dark">05307353340</span>
+            <p><strong class="text-dark">Chave PIX (Celular):</strong> 
+                <span id="cpfPix" class="text-dark">88997443499</span>
                 <button type="button" class="copy-btn" onclick="copiarPix()">Copiar</button>
             </p>
 
@@ -84,7 +156,7 @@
             <input type="hidden" name="comprovante_msg" value="Aguardando comprovante PIX enviado pelo WhatsApp">
         </div>
 
-        <button class="btn btn-success w-100 mt-3" type="button" onclick="enviarWhats()">Enviar</button>
+        <button type="button" class="botao" onclick="enviarWhats()">Enviar</button>
     </form>
 </div>
 
@@ -108,7 +180,7 @@
 
     // Copiar CPF PIX
     function copiarPix() {
-        navigator.clipboard.writeText("05307353340");
+        navigator.clipboard.writeText("88997443499");
         alert("Chave PIX copiada!");
     }
 
@@ -136,7 +208,7 @@ Pagamento: ${pagamento.toUpperCase()}
 ${pagamento === "pix" ? "⚠ Envie o comprovante do PIX após o pagamento." : ""}`;
 
         // WhatsApp
-        let url = "https://wa.me/5588988188728?text=" + encodeURIComponent(msg);
+        let url = "https://wa.me/5588997443499?text=" + encodeURIComponent(msg);
         window.open(url, "_blank");
 
         // Agora envia para o banco
