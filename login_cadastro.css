@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(to left bottom, #000000, #14084b);
+  background-image: linear-gradient(to left bottom, #000000, #4b0808);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -75,9 +75,4 @@ button:hover {
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-a{
-  color: white;
-  text-decoration: none;
 }

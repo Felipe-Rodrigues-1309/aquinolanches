@@ -31,7 +31,7 @@ if ($user && password_verify($senhaDigitada, $user['senha'])) {
     exit();
 
 } else {
-    echo "<h2>❌ Usuário ou senha incorretos!</h2>";
+    echo "<script>alert('Usuário ou Senha Incorretos!'); window.location.href='../pagina_de_login.html';</script>";
 }
 
 $stmt->close();
