@@ -204,7 +204,7 @@ $totalPendente  = $totais['total_pendente']  ?? 0;
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><?= $row['id'] ?></td>
+                        <td><?= $row['id_usuario'] ?></td>
                         <td><?= htmlspecialchars($row['nome']) ?></td>
                         <td><?= $row['quantidade'] ?></td>
                         <td>R$ <?= number_format($row['valor'], 2, ',', '.') ?></td>

@@ -1,27 +1,25 @@
 <?php
-include "conexao.php"; // Arquivo com conexão ao MySQL
-
+include "conexao.php";
 
 date_default_timezone_set('America/Sao_Paulo');
 
-$nome = $_POST['nome'];
+$nome       = $_POST['nome'];
+$id_usuario = $_POST['id_usuario'];  // ID enviado na sessão
 $quantidade = $_POST['quantidade'];
-$valor = $_POST['valor'];
-$pagamento = $_POST['pagamento'];
+$valor      = $_POST['valor'];
+$pagamento  = $_POST['pagamento'];
 
-// DATA AUTOMÁTICA
-$data_pedido = date("Y-m-d H:i:s"); // Formato ideal para MySQL
+$data_pedido = date("Y-m-d H:i:s");
 
-$sql = "INSERT INTO pedidos (nome, quantidade, valor, pagamento, data_pedido) 
-        VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO pedidos (id_usuario, nome, quantidade, valor, pagamento, data_pedido)
+        VALUES (?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sdsss", $nome, $quantidade, $valor, $pagamento, $data_pedido);
+$stmt->bind_param("isdsss", $id_usuario, $nome, $quantidade, $valor, $pagamento, $data_pedido);
 
 if ($stmt->execute()) {
-    header("Location: pagina_inicial.html");
+    header("Location: pagina_inicial.php");
     exit;
 } else {
     echo "Erro ao salvar pedido.";
 }
-?>
