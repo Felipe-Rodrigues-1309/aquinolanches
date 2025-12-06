@@ -25,8 +25,7 @@ $nomeLogado = $_SESSION['usuario'];
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="listar_seus_pedidos.php">Seus Pedidos</a>
-        <a class="nav-link active" href="#">Enviar Comprovante</a>
-        <a class="nav-link active" href="#">Duvidas ? </a>
+        <a class="nav-link active" href="https://wa.me/5588997443499?text=Ol%C3%A1%2C%20tenho%20uma%20Duvida !">Duvidas ? </a>
         <a class="nav-link active" href="pagina_de_login.html">Sair</a>
       </div>
     </div>
@@ -129,7 +128,8 @@ $nomeLogado = $_SESSION['usuario'];
 <body>
 
 <div class="card shadow">
-    <h3 class="text-center mb-3">Salgado Valor R$ 3,50</h3>
+<h1>Salgado</h1>
+<h3>Valor: R$ 3,50</h3>
 
     <form id="formPedido" action="enviar_para_o_banco.php" method="POST">
 

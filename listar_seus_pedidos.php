@@ -62,8 +62,8 @@ $chavePix = "88997443499";
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="pagina_inicial.php">Fazer Pedido</a>
-        <a class="nav-link active" href="#">Enviar Comprovante</a>
-        <a class="nav-link active" href="#">Duvidas ? </a>
+        <a class="nav-link active" href="https://wa.me/5588997443499?text=Ol%C3%A1%2C%20Segue%20Comprovante%20Pix !">Enviar Comprovante</a>
+        <a class="nav-link active" href="https://wa.me/5588997443499?text=Ol%C3%A1%2C%20tenho%20uma%20Duvida !">Duvidas ? </a>
         <a class="nav-link active" href="pagina_de_login.html">Sair</a>
       </div>
     </div>
