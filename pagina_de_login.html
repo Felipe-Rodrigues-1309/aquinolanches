@@ -1,42 +1,123 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <!--inicio bootstrap-->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-    <!--final bootstrap-->
-    <link rel="stylesheet" href="login.css" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pagina inicial</title>
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+/* Fundo */
+body {
+  background-image: linear-gradient(to left bottom, #000000, #14084b);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.titulo-pagina {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    z-index: 9999;
+}
+
+
+/* Card principal */
+.card-glass {
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    padding: 35px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+}
+
+/* Inputs */
+.card-glass input {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+}
+
+.card-glass input::placeholder {
+    color: #e0e0e0;
+}
+
+/* Links */
+.card-glass a {
+    color: #02ff28;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.card-glass a:hover {
+    text-decoration: underline;
+}
+
+/* Botão */
+.card-glass button {
+    width: 100%;
+    border-radius: 12px;
+    font-weight: bold;
+    background: white;
+    color: #08094b;
+}
+
+/* Fade */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+</head>
+<body>
+  <h1 class="titulo-pagina">Dutra Lanches</h1>
+
+
+<div class="card-glass">
+    
+    <!-- Ícone girando -->
+    <div class="lock-icon"><img src="img/login-da-conta.png" alt="" width="90px"></div>
+
+    <h2 class="text-white mb-3">Login</h2>
+
     <form action="back-end_login/login.php" method="post">
-      <h1>Login</h1>
-      <input
-        name="usuario"
-        type="text"
-        placeholder="Login"
-        required
-      /><br /><br />
-      <input
-        name="senha"
-        type="password"
-        placeholder="Senha"
-        required
-      /><br />
-      <h4><a href="pagina_de_cadastro.html">Primerio Acesso ?</a></h4><br>
-      <h7><a href="back-end_login/esqueci_senha.php">Esqueceu a Senha?</a></h7><br>
-      <button type="submit">Entrar</button>
+
+        <div class="mb-3">
+            <input name="usuario" type="text" class="form-control form-control-lg" placeholder="Login" required>
+        </div>
+
+        <div class="mb-3">
+            <input name="senha" type="password" class="form-control form-control-lg" placeholder="Senha" required>
+        </div>
+
+        <button type="submit" class="btn btn-light mb-3">Entrar</button>
+
+        <div>
+            <a href="pagina_de_cadastro.html">Primeiro acesso?</a><br><br>
+            <a href="back-end_login/esqueci_senha.php">Esqueceu a senha?</a>
+        </div>
+
     </form>
-  </body>
+</div>
+
+</body>
 </html>
